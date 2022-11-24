@@ -9,7 +9,8 @@
  import request from "request";
  import dotenv from "dotenv";
  import path from "path";
-  import { fileURLToPath } from "url";
+ import { fileURLToPath } from "url";
+ import serveIndex  from "serve-index";
 
 
 // load the environment variables from the .env file
@@ -39,7 +40,8 @@ app.use(bodyParser.json())
  const port = process.env.PORT || "8000";
 
 //  allow public access to the public folder
-app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use('/static', express.static(path.join(__dirname, 'public')));
+app.use('/static', serveIndex('public'));
 
 
 /**
