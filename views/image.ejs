@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head'); %>
+  </head>
+  <body class="container">
+    <header><%- include('./partials/header'); %></header>
+
+    <main class="mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 mx-auto">
+            <!-- create a bootstrap 5 form -->
+            <form action="/generateimage" method="POST">
+              <div class="form-group mb-3">
+                <label for="prompt">Give a prompt</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="prompt"
+                  name="prompt"
+                  placeholder="Enter your prompt"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <!-- center the div -->
+            <div id="response" class="d-flex justify-content-center mt-3">
+              <!-- display the image -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer><%- include('./partials/footer'); %></footer>
+  </body>
+</html>
+
+<script>
+  // create an api call to /completion and pass in the prompt and description
+  // from the form
+  const form = document.querySelector("form");
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const prompt = formData.get("prompt");
+    const body = { prompt };
+    // show a loading message
+    const response = document.querySelector("#response");
+    response.innerHTML = "Loading...";
+    // make the button disabled
+    const button = document.querySelector("button");
+    button.disabled = true;
+    try {
+      const res = await fetch("/generateimage", {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.ok) {
+        const description = document.querySelector("#description");
+        const data = await res.json();
+        // remove the loading message
+        response.innerHTML = "";
+        response.innerHTML = `<img class="img-fluid rounded" src="${data}" />`;
+        // enable the button
+        button.disabled = false;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+</script>
