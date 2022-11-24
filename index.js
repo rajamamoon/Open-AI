@@ -124,7 +124,7 @@ app.post('/generateimage', async function(req, res) {
       const serverUrl = req.protocol + '://' + req.get('host');
       var path = serverUrl + "/static/uploads/" + filename;
       console.log(path);
-    res.json(path);
+    res.json(response);
 });
 });
 
