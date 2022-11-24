@@ -107,7 +107,6 @@ app.post('/generateimage', async function(req, res) {
         n: 1,
         size: "512x512",
       });
-      console.log(response.data.data[0].url);
       return response.data.data[0].url;
     }
 
@@ -120,13 +119,11 @@ app.post('/generateimage', async function(req, res) {
     var filename = trimmedPrompt +"-"+ date.getTime() + ".png";
 
     download(response, "public/uploads/" + filename , function(){
-      console.log('File creation done');
       // get the path of the file and append the server url
-      // getthe current server url
       const serverUrl = req.protocol + '://' + req.get('host');
       var path = serverUrl + "/static/uploads/" + filename;
       console.log(path);
-    res.json(response);
+    res.json(path);
 });
 });
 
